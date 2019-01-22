@@ -8,15 +8,15 @@ public class RegisterLogFile {
 	public static void main(String[] args) throws IOException {
 		UsersAgenda users = new UsersAgenda();
 		Scanner sc = new Scanner(System.in);
-	    File usersFile = new File("C:\\Users\\ik013043z1\\eclipse-workspace\\RegisterLogFile\\src\\users.txt");
-	    Scanner sc2 = new Scanner(usersFile);
-	    while(sc2.hasNext()) {
-	    	String userInformation = sc2.nextLine();
-	    	String[] userInformationArray=userInformation.split(" ");
-	    	String username = userInformationArray[0];
-	    	String password = userInformationArray[1];
-	    	users.addUser(new User(username,password));
-	    }
+		File usersFile = new File("C:\\Users\\ik013043z1\\eclipse-workspace\\RegisterLogFile\\src\\users.txt");
+		Scanner sc2 = new Scanner(usersFile);
+		while (sc2.hasNext()) {
+			String userInformation = sc2.nextLine();
+			String[] userInformationArray = userInformation.split(" ");
+			String username = userInformationArray[0];
+			String password = userInformationArray[1];
+			users.register(new User(username, password));
+		}
 		System.out.println("Please, select an option:");
 		boolean finished = false;
 		while (!finished) {
@@ -33,7 +33,7 @@ public class RegisterLogFile {
 					while (!usernameEntered) {
 						String entered = sc.nextLine();
 						if (users.isWord(entered)) {
-							if (users.findUsername(entered)==-1) {
+							if (users.findUsername(entered) == -1) {
 								usernameEntered = true;
 								String username = entered;
 								System.out.println(
@@ -44,13 +44,13 @@ public class RegisterLogFile {
 									if (users.isValidPassword(entered)) {
 										passwordEntered = true;
 										String password = entered;
-										users.addUser(new User(username, password));
+										users.register(new User(username, password));
 										System.out.println("You were registered successfully.");
 									} else {
 										System.out.println("Please, enter a valid password.");
 									}
 								}
-							}else {
+							} else {
 								System.out.println("That username is already used, please enter another one.");
 							}
 						} else {
@@ -64,11 +64,10 @@ public class RegisterLogFile {
 						System.out.println("Please, enter the username.");
 						String entered = sc.nextLine();
 						if (users.isWord(entered)) {
-							if (users.findUsername(entered)!=-1) {
-								usernameEntered=true;
+							if (users.findUsername(entered) != -1) {
+								usernameEntered = true;
 								String username = entered;
-								System.out.println(
-										"Please, enter the password.");
+								System.out.println("Please, enter the password.");
 								boolean passwordEntered = false;
 								while (!passwordEntered) {
 									entered = sc.nextLine();
@@ -78,9 +77,10 @@ public class RegisterLogFile {
 										if (users.logIn(user)) {
 											passwordEntered = true;
 											System.out.println("You loggined in successfully, " + username + ".");
-											boolean logOut=false;
+											boolean logOut = false;
 											while (!logOut) {
-												System.out.print("1 Change the password.\n2 Remove the user.\n0 Log out.");
+												System.out.print(
+														"1 Change the password.\n2 Remove the user.\n0 Log out.");
 												// Check that the user enters a number
 												if (sc.hasNextInt()) {
 													option = sc.nextInt();
@@ -88,16 +88,18 @@ public class RegisterLogFile {
 													sc.nextLine();
 													switch (option) {
 													case 1: /* Change password */
-														System.out.println("Please, enter the new password (It must be no less than 8 characters and must contain letters, simbols and numbers).");
+														System.out.println(
+																"Please, enter the new password (It must be no less than 8 characters and must contain letters, simbols and numbers).");
 														passwordEntered = false;
 														while (!passwordEntered) {
-															entered=sc.nextLine();
+															entered = sc.nextLine();
 															if (users.isValidPassword(entered)) {
-																passwordEntered=true;
-																User modifiedUser = new User(username,entered);
+																passwordEntered = true;
+																User modifiedUser = new User(username, entered);
 																users.modifyUser(modifiedUser);
-																System.out.println("You changed the password successfully");
-															}else {
+																System.out.println(
+																		"You changed the password successfully");
+															} else {
 																System.out.println("Please, enter a valid password.");
 															}
 														}
@@ -105,7 +107,7 @@ public class RegisterLogFile {
 													case 2: /* Remove user */
 														users.removeUser(user);
 														System.out.println("You removed the user successfully");
-														logOut=true;
+														logOut = true;
 														break;
 													case 0:
 														logOut = true;
@@ -117,14 +119,14 @@ public class RegisterLogFile {
 													sc.nextLine();
 												}
 											}
-										}else {
+										} else {
 											System.out.println("The password was incorrect, try it again please.");
 										}
 									} else {
 										System.out.println("Please, enter a valid password.");
 									}
 								}
-							}else {
+							} else {
 								System.out.println("That username does not exist, try it again");
 							}
 						} else {
@@ -133,16 +135,16 @@ public class RegisterLogFile {
 					}
 					break;
 				case 0:
-				    BufferedWriter writer = new BufferedWriter(new FileWriter(usersFile));
+					BufferedWriter writer = new BufferedWriter(new FileWriter(usersFile));
 					String userInformation = "";
-					for (int i=0; i<users.getUsers().size();i++) {
+					for (int i = 0; i < users.getUsers().size(); i++) {
 						String username = users.getUsers().get(i).getUsername();
 						String password = users.getUsers().get(i).getPassword();
 						userInformation = username + " " + password;
 						writer.write(userInformation);
 						writer.newLine();
 					}
-				    writer.close();
+					writer.close();
 					finished = true;
 					break;
 				}

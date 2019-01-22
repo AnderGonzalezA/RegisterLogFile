@@ -101,7 +101,7 @@ public class UsersAgenda {
      * @return If the username and the password meet the conditions to be added as a user, true. Otherwise, false
 
      */
-	public boolean addUser(User newUser) {
+	public boolean register(User newUser) {
 		if (findUsername(newUser.getUsername())==-1 && isValidPassword(newUser.getPassword())) {
 			this.users.add(newUser);
 			return true;
