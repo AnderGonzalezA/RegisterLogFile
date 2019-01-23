@@ -32,7 +32,7 @@ public class RegisterLogFile {
 					boolean usernameEntered = false;
 					while (!usernameEntered) {
 						String entered = sc.nextLine();
-						if (users.isWord(entered)) {
+						if (users.isToken(entered)) {
 							if (users.findUsername(entered) == -1) {
 								usernameEntered = true;
 								String username = entered;
@@ -41,10 +41,10 @@ public class RegisterLogFile {
 								boolean passwordEntered = false;
 								while (!passwordEntered) {
 									entered = sc.nextLine();
-									if (users.isValidPassword(entered)) {
+									User newUser = new User(username, entered);
+									if (newUser.isValidPassword(entered)) {
 										passwordEntered = true;
-										String password = entered;
-										users.register(new User(username, password));
+										users.register(newUser);
 										System.out.println("You were registered successfully.");
 									} else {
 										System.out.println("Please, enter a valid password.");
@@ -63,7 +63,7 @@ public class RegisterLogFile {
 					while (!usernameEntered) {
 						System.out.println("Please, enter the username.");
 						String entered = sc.nextLine();
-						if (users.isWord(entered)) {
+						if (users.isToken(entered)) {
 							if (users.findUsername(entered) != -1) {
 								usernameEntered = true;
 								String username = entered;
@@ -71,9 +71,8 @@ public class RegisterLogFile {
 								boolean passwordEntered = false;
 								while (!passwordEntered) {
 									entered = sc.nextLine();
-									if (users.isValidPassword(entered)) {
-										String password = entered;
-										User user = new User(username, password);
+									User user = new User(username, entered);
+									if (user.isValidPassword(entered)) {
 										if (users.logIn(user)) {
 											passwordEntered = true;
 											System.out.println("You loggined in successfully, " + username + ".");
@@ -93,9 +92,9 @@ public class RegisterLogFile {
 														passwordEntered = false;
 														while (!passwordEntered) {
 															entered = sc.nextLine();
-															if (users.isValidPassword(entered)) {
+															User modifiedUser = new User(username, entered);
+															if (modifiedUser.isValidPassword(entered)) {
 																passwordEntered = true;
-																User modifiedUser = new User(username, entered);
 																users.modifyUser(modifiedUser);
 																System.out.println(
 																		"You changed the password successfully");

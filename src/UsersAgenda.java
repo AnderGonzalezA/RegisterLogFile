@@ -38,7 +38,7 @@ public class UsersAgenda {
      * @return If it is composed of just a token true. Otherwise, false.
 
      */
-	public boolean isWord(String entered) {
+	public boolean isToken(String entered) {
 		String[] enteredTokens = entered.split(" ");
 		if (enteredTokens.length == 1) {
 			return true;
@@ -63,38 +63,6 @@ public class UsersAgenda {
 	}
 	/**
 
-     * A method to check if the password meets the conditions
-
-     * @param entered The password the user entered
-     * @return If it is valid, true. Otherwise, false.
-
-     */
-	public boolean isValidPassword(String entered) {
-		if (isWord(entered)) {
-			if (entered.length() >= 8) {
-				boolean isLetter = false;
-				boolean isSymbol = false;
-				boolean isNumber = false;
-				for (int i = 0; i < entered.length(); i++) {
-					int intValue = (entered.charAt(i))-'0';
-					if (Character.isLetter(entered.charAt(i))) {
-						isLetter = true;
-					} else if (intValue == 0 || intValue == 1 || intValue == 2 || intValue == 3 || intValue == 4
-							|| intValue == 5 || intValue == 6 || intValue == 7 || intValue == 8 || intValue == 9) {
-						isNumber = true;
-					} else {
-						isSymbol = true;
-					}
-				}
-				if (isLetter && isNumber && isSymbol) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	/**
-
      * A method to add a user to the ArrayList users
 
      * @param newUser The new user
@@ -102,7 +70,7 @@ public class UsersAgenda {
 
      */
 	public boolean register(User newUser) {
-		if (findUsername(newUser.getUsername())==-1 && isValidPassword(newUser.getPassword())) {
+		if (findUsername(newUser.getUsername())==-1 && newUser.isValidPassword(newUser.getPassword())) {
 			this.users.add(newUser);
 			return true;
 		}
